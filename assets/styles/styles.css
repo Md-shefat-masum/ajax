@@ -1,0 +1,9 @@
+#banner h1 {
+  text-align: center;
+  background-color: var(--bs-blue);
+  color: var(--bs-white);
+  padding: 40px 0px;
+  margin: 5px 0px;
+  border-radius: 5px;
+}
+/*# sourceMappingURL=./styles.css.map */
