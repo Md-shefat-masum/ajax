@@ -1,6 +1,6 @@
-@protocol = http://
-@hostname = 127.0.0.1
-@port = 8000
+@protocol = https://
+@hostname = qbank.techparkit.org
+@port = 
 @host = {{hostname}}:{{port}}
 @endpoint = api/user
 @url = {{protocol}}{{hostname}}:{{port}}/{{endpoint}}
@@ -12,6 +12,7 @@
 #                                               #
 
 ### get all data without pagination
+### will return:  { full_name: '', email: '', token: '' }
 GET {{url}} HTTP/1.1
 
 
@@ -49,7 +50,7 @@ content-type: application/json
 ### update data
 # @prompt id enter id
 # @prompt full_name enter full name
-PUT {{url}}/{{id}} HTTP/1.1
+POST {{url}}/{{id}} HTTP/1.1
 content-type: application/json
 
 {

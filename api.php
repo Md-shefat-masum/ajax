@@ -1,3 +1,4 @@
+
 function get_data()
 {
     if(!file_exists(public_path('d.json'))){
@@ -54,7 +55,7 @@ Route::post('/user', function () {
     }
 
     $data = get_data();
-    $req_data['id'] = $data[count($data)-1]->id+1;
+    $req_data['id'] = count($data) ? $data[count($data)-1]->id+1 : 1;
     $req_data = array_merge($req_data, request()->all());
     if(request()->hasFile('image')){
         $req_data['image'] = url("avatar.png");
@@ -109,3 +110,5 @@ Route::delete('/user/{id}', function ($id) {
     file_put_contents(public_path('d.json'), json_encode($data, JSON_PRETTY_PRINT));
     return response()->json(["$id deleted", $data]);
 });
+
+
