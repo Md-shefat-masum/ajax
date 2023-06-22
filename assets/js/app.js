@@ -1,5 +1,5 @@
 let ajax = {
-    base: "http://127.0.0.1:8000/api",
+    base: "https://qbank.techparkit.org/api",
     form_submit_type: 'POST',
     data: "",
     single_data: {},
@@ -9,10 +9,10 @@ let ajax = {
     pagination_list: document.querySelector(".pagination_list"),
     formModal: new bootstrap.Modal('#formModalToggle', {}),
     detailsModal: new bootstrap.Modal('#detailsModal', {}),
-    
-    init: async function (end_point = "/user?page=1", serach_key="") {
+
+    init: async function (end_point = "/user?page=1", serach_key = "") {
         let url = this.base + end_point;
-        if(serach_key){
+        if (serach_key) {
             url += `&search=${serach_key}`;
         }
         let res = await fetch(url);
@@ -25,15 +25,16 @@ let ajax = {
         let res = await fetch(this.base + end_point + `/${id}`);
         let data = await res.json();
         this.single_data = data;
-        if(show_modal){
+        if (show_modal) {
             return this.render_show_modal();
         }
         this.render_form();
     },
     submit: async function (end_point = "/user") {
         this.remove_error();
+        this.disable_submit_btn();
         let url = this.base + end_point;
-        if(this.form_submit_type == "PUT"){
+        if (this.form_submit_type == "PUT") {
             url += `/${this.single_data.id}`;
         }
         let res = await fetch(url, {
@@ -43,6 +44,7 @@ let ajax = {
 
         let status = res.status;
         let data = await res.json();
+        this.anable_submit_btn();
         if (status == 422) {
             return this.render_error(data)
         }
@@ -51,24 +53,30 @@ let ajax = {
         this.init();
         this.formModal.hide();
     },
-    delete: async function (id, end_point = "/user"){
+    delete: async function (id, end_point = "/user") {
         let confirm = window.confirm('delete')
-        if(!confirm){
+        if (!confirm) {
             return 0;
         }
-        let res = await fetch(this.base + end_point + `/${id}`,{method: "DELETE"});
+        let res = await fetch(this.base + end_point + `/${id}`, { method: "DELETE" });
         let status = res.status;
         let data = await res.json();
-        if(status == 200){
+        if (status == 200) {
             this.init();
         }
     },
-    render_show_modal: function(){
+    disable_submit_btn: function () {
+        [...document.querySelectorAll('button[type="submit"]')].forEach(el => (el.disabled = true))
+    },
+    anable_submit_btn: function () {
+        [...document.querySelectorAll('button[type="submit"]')].forEach(el => el.disabled = false)
+    },
+    render_show_modal: function () {
         for (const key in this.single_data) {
             if (Object.hasOwnProperty.call(this.single_data, key)) {
                 const value = this.single_data[key];
                 let el = document.querySelector(`#d_${key}`);
-                if(el){
+                if (el) {
                     el.innerHTML = value;
                 }
             }
@@ -77,7 +85,7 @@ let ajax = {
         let el = document.querySelector(`#d_image`)
         el?.src && (el.src = this.single_data["image"]);
         this.detailsModal.show();
-    }, 
+    },
     render: function () {
         // console.log(this.data);
         let html = this.data.data.map(function (i) {
@@ -112,7 +120,7 @@ let ajax = {
         }).join('');
         this.table_body.innerHTML = html;
 
-        let paginateHTML = this.data.links.map(function(i){
+        let paginateHTML = this.data.links.map(function (i) {
             return `
                 <li class="page-item">
                     <a class="page-link ${i.active && `active`}" onclick="event.preventDefault(); ajax.init('${i.url}')" href="${i.url}">
@@ -141,9 +149,9 @@ let ajax = {
                         let radioEL = document.querySelector(`input[value="${value}"]`);
                         radioEL && (radioEL.checked = true)
                     }
-                }else if(courses.length && key == "courses"){
-                    [...courses].forEach(function(el){
-                        if(value?.includes(el.value)){
+                } else if (courses.length && key == "courses") {
+                    [...courses].forEach(function (el) {
+                        if (value?.includes(el.value)) {
                             el.checked = true;
                         }
                     })
