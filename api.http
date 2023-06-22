@@ -4,7 +4,6 @@
 @host = {{hostname}}:{{port}}
 @endpoint = api/user
 @url = {{protocol}}{{hostname}}:{{port}}/{{endpoint}}
-@contentType = application/json
 @createdAt = {{$timestamp}}
 # @modifiedBy = {{$processEnv USERNAME}}
 
@@ -28,7 +27,7 @@ content-type: application/json
 {
     "full_name": "{{full_name}}",
     "email": "{{full_name}}@gmail.com",
-    "dob": "{{$timestamp - $randomInt 7300 7500}}",
+    "dob": "{{$timestamp -7300 d}}",
     "user_role": "admin",
     "gender": "male",
     "courses": "[\"webdesign\",\"graphics design\"]",
