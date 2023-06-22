@@ -51,6 +51,7 @@
 </head>
 
 <body>
+    
     <nav class="navbar navbar-expand-lg shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">Navbar</a>
@@ -82,6 +83,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h4>All Data</h4>
+                    <div>
+                        <input type="search" onkeyup="event.key == `Enter` && ajax.init(`/user?page=1`,event.target.value)" class="form-control">
+                    </div>
                     <div>
                         <button class="btn btn-secondary btn-sm" onclick="ajax.form_submit_type = `POST`; ajax.ajax_form.reset();" data-bs-target="#formModalToggle" data-bs-toggle="modal">Create</button>
                     </div>
@@ -208,43 +212,57 @@
                             <tr>
                                 <td>Full Name</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>
+                                    <div id="d_full_name"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Email</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>
+                                    <div id="d_email"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Birth Date</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>
+                                    <div id="d_dob"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>User Role</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>
+                                    <div id="d_user_role"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Gender</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>
+                                    <div id="d_gender"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Course</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>
+                                    <div id="d_courses"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Description</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>
+                                    <div id="d_description"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Image</td>
                                 <td>:</td>
                                 <td>
-                                    <img src="" alt="">
+                                    <img id="d_image" src="" alt="">
                                 </td>
                             </tr>
                         </tbody>

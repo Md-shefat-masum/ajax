@@ -8,17 +8,26 @@ let ajax = {
     ajax_form: document.querySelector("#ajax_form"),
     pagination_list: document.querySelector(".pagination_list"),
     formModal: new bootstrap.Modal('#formModalToggle', {}),
-    init: async function (end_point = "/user?page=1") {
-        let res = await fetch(this.base + end_point);
+    detailsModal: new bootstrap.Modal('#detailsModal', {}),
+    
+    init: async function (end_point = "/user?page=1", serach_key="") {
+        let url = this.base + end_point;
+        if(serach_key){
+            url += `&search=${serach_key}`;
+        }
+        let res = await fetch(url);
         let data = await res.json();
         this.data = data;
         this.render();
     },
-    get_data: async function (id = 1, end_point = "/user") {
+    get_data: async function (id = 1, end_point = "/user", show_modal = false) {
         this.form_submit_type = 'PUT';
         let res = await fetch(this.base + end_point + `/${id}`);
         let data = await res.json();
         this.single_data = data;
+        if(show_modal){
+            return this.render_show_modal();
+        }
         this.render_form();
     },
     submit: async function (end_point = "/user") {
@@ -54,6 +63,21 @@ let ajax = {
             this.init();
         }
     },
+    render_show_modal: function(){
+        for (const key in this.single_data) {
+            if (Object.hasOwnProperty.call(this.single_data, key)) {
+                const value = this.single_data[key];
+                let el = document.querySelector(`#d_${key}`);
+                if(el){
+                    el.innerHTML = value;
+                }
+            }
+        }
+
+        let el = document.querySelector(`#d_image`)
+        el?.src && (el.src = this.single_data["image"]);
+        this.detailsModal.show();
+    }, 
     render: function () {
         // console.log(this.data);
         let html = this.data.data.map(function (i) {
@@ -76,7 +100,7 @@ let ajax = {
                                 <i class="fa fa-align-right"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end py-2">
-                                <a data-bs-target="#detailsModal" data-bs-toggle="modal" class="dropdown-item" href="#!">View</a>
+                                <a onclick="ajax.get_data(${i.id},'/user',true)" class="dropdown-item" href="#!">View</a>
                                 <a class="dropdown-item" onclick="ajax.get_data(${i.id})" href="#!">Edit</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" onclick="ajax.delete(${i.id})" href="#!">Delete</a>
@@ -100,12 +124,14 @@ let ajax = {
         this.pagination_list.innerHTML = paginateHTML;
     },
     render_form: function () {
-        console.log(this.single_data);
+        // console.log(this.single_data);
+        this.ajax_form.reset();
         for (const key in this.single_data) {
             if (Object.hasOwnProperty.call(this.single_data, key)) {
                 const value = this.single_data[key];
                 let el = document.querySelector(`#${key}`);
                 let elByName = document.querySelector(`input[name="${key}"]`);
+                let courses = document.querySelectorAll(`input[name="courses[]"]`);
                 if (el && el.nodeName != "LABEL") {
                     if (['text', 'textarea', 'select', 'date', 'time', 'email'].includes(el.type)) {
                         el.value = value;
@@ -115,7 +141,12 @@ let ajax = {
                         let radioEL = document.querySelector(`input[value="${value}"]`);
                         radioEL && (radioEL.checked = true)
                     }
-                    console.log(elByName);
+                }else if(courses.length && key == "courses"){
+                    [...courses].forEach(function(el){
+                        if(value?.includes(el.value)){
+                            el.checked = true;
+                        }
+                    })
                 }
             }
         }

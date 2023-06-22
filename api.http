@@ -19,6 +19,10 @@ GET {{url}} HTTP/1.1
 GET {{url}}?page=1 HTTP/1.1
 
 
+### search data with pagination
+GET {{url}}?page=1&search=fat HTTP/1.1
+
+
 ### get one
 # @prompt id enter id
 GET {{url}}/{{id}} HTTP/1.1

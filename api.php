@@ -1,4 +1,3 @@
-
 function get_data()
 {
     if(!file_exists(public_path('d.json'))){
@@ -10,6 +9,12 @@ function get_data()
 Route::get('/user', function () {
     $data = get_data();
     $data = array_reverse($data);
+    if(request()->has("search")){
+        $key = request()->search;
+        $data = array_filter($data, function($item) use($key){
+            return str_contains($item->full_name, $key);
+        });
+    }
     if(request()->has('page')){
         $page = request()->page;
         $per_page = 10;
@@ -49,7 +54,7 @@ Route::post('/user', function () {
     }
 
     $data = get_data();
-    $req_data['id'] = count($data)+1;
+    $req_data['id'] = $data[count($data)-1]->id+1;
     $req_data = array_merge($req_data, request()->all());
     if(request()->hasFile('image')){
         $req_data['image'] = url("avatar.png");
