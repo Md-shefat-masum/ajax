@@ -90,15 +90,9 @@
                         <table class="table table-striped mb-0" style="width: calc(100% - 4px);">
                             <thead class="">
                                 <tr>
-                                    <th class="border-top ps-3">ID</th>
-                                    <th class="border-top">Name</th>
+                                    <th class="border-top ps-3">Name</th>
                                     <th class="border-top">Email</th>
-                                    <th class="border-top">DOB</th>
-                                    <th class="border-top">Role</th>
-                                    <th class="border-top">Gender</th>
-                                    <th class="border-top">Courses</th>
-                                    <th class="border-top">Description</th>
-                                    <th class="border-top">Image</th>
+                                    <th class="border-top">Age</th>
                                     <th class="text-end align-middle pe-3 border-top">ACTION</th>
                                 </tr>
                             </thead>
@@ -107,17 +101,9 @@
                                 for ($i = 0; $i < 10; $i++) {
                                 ?>
                                     <tr>
-                                        <td class="align-middle ps-3"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle">
-                                            <img width="60px;" src="./assets/images/ajax.gif" alt="">
-                                        </td>
+                                        <td class="align-middle ps-3 name">Anna</td>
+                                        <td class="align-middle email">anna@example.com</td>
+                                        <td class="align-middle age">18</td>
                                         <td class="align-middle white-space-nowrap text-end pe-3">
                                             <div class="font-sans-serif btn-reveal-trigger position-static">
                                                 <button class="btn btn-sm btn-outline-success dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
@@ -195,10 +181,10 @@
                         <div class="from-group mb-3">
                             <label for="">Courses</label> <br>
                             <label for="web_design">
-                                <input id="web_design" value="web_design" name="courses[]" type="checkbox" class="form-check-input"> web design <br>
+                                <input id="web_design" value="web_design" name="gender" type="checkbox" class="form-check-input"> web design <br>
                             </label>
                             <label for="graphics_design">
-                                <input id="graphics_design" value="graphics_design" name="courses[]" type="checkbox" class="form-check-input"> graphics design <br>
+                                <input id="graphics_design" value="graphics_design" name="gender" type="checkbox" class="form-check-input"> graphics design <br>
                             </label>
                         </div>
                         <div class="from-group mb-3">

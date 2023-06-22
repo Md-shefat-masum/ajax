@@ -1,0 +1,62 @@
+@protocol = http://
+@hostname = 127.0.0.1
+@port = 8000
+@host = {{hostname}}:{{port}}
+@endpoint = api/user
+@url = {{protocol}}{{hostname}}:{{port}}/{{endpoint}}
+@contentType = application/json
+@createdAt = {{$timestamp}}
+# @modifiedBy = {{$processEnv USERNAME}}
+
+#                                               #
+#------------------ API TESTING ----------------#
+#                                               #
+
+### get all data without pagination
+GET {{url}} HTTP/1.1
+
+
+### get all data with pagination
+GET {{url}}?page=1 HTTP/1.1
+
+
+### create data
+# @prompt full_name enter full name
+POST {{url}} HTTP/1.1
+content-type: application/json
+
+{
+    "full_name": "{{full_name}}",
+    "email": "{{full_name}}@gmail.com",
+    "dob": "{{$timestamp - $randomInt 7300 7500}}",
+    "user_role": "admin",
+    "gender": "male",
+    "courses": "[\"webdesign\",\"graphics design\"]",
+    "description": "demo description",
+    "image": "avatar.png",
+    "createdAt": "{{createdAt}}"
+}
+
+
+### update data
+# @prompt id enter id
+# @prompt full_name enter full name
+PUT {{url}}/{{id}} HTTP/1.1
+content-type: application/json
+
+{
+    "full_name": "{{full_name}}",
+    "email": "{{full_name}}@gmail.com",
+    "dob": "{{$timestamp - $randomInt 7300 7500}}",
+    "user_role": "admin",
+    "gender": "male",
+    "courses": "[\"webdesign\",\"graphics design\"]",
+    "description": "demo description",
+    "image": "avatar.png"
+}
+
+
+### delete data
+# @prompt id enter id
+DELETE {{url}}/{{id}} HTTP/1.1
+content-type: application/json
