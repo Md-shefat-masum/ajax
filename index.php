@@ -46,7 +46,9 @@
     <script src="./assets/plugins/bootstrap/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/styles/styles.css">
-
+    <script src="./assets/plugins/sweetalert2@11.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="./assets/js/app.js" defer></script>
 </head>
 
 <body>
@@ -82,12 +84,12 @@
                 <div class="card-header d-flex justify-content-between">
                     <h4>All Data</h4>
                     <div>
-                        <button class="btn btn-secondary btn-sm" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Create</button>
+                        <button class="btn btn-secondary btn-sm" onclick="ajax.form_submit_type = `POST`; ajax.ajax_form.reset();" data-bs-target="#formModalToggle" data-bs-toggle="modal">Create</button>
                     </div>
                 </div>
                 <div class="card-body ">
                     <div class="table-responsive">
-                        <table class="table table-striped mb-0" style="width: calc(100% - 4px);">
+                        <table id="ajax_table" class="table table-striped mb-0" style="width: calc(100% - 4px);">
                             <thead class="">
                                 <tr>
                                     <th class="border-top ps-3">ID</th>
@@ -102,46 +104,22 @@
                                     <th class="text-end align-middle pe-3 border-top">ACTION</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php
-                                for ($i = 0; $i < 10; $i++) {
-                                ?>
-                                    <tr>
-                                        <td class="align-middle ps-3"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle"></td>
-                                        <td class="align-middle">
-                                            <img width="60px;" src="./assets/images/ajax.gif" alt="">
-                                        </td>
-                                        <td class="align-middle white-space-nowrap text-end pe-3">
-                                            <div class="font-sans-serif btn-reveal-trigger position-static">
-                                                <button class="btn btn-sm btn-outline-success dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
-                                                    <i class="fa fa-align-right"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end py-2">
-                                                    <a data-bs-target="#detailsModal" data-bs-toggle="modal" class="dropdown-item" href="#!">View</a>
-                                                    <a class="dropdown-item" href="#!">Edit</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item text-danger" href="#!">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php
-                                }
-                                ?>
+                            <tbody >
+                                <tr>
+                                    <td colspan="10" class="text-center align-middle">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        loading...
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="card-footer">
                     <nav aria-label="Page navigation example">
-                        <ul class="pagination mb-0 justify-content-center">
+                        <ul class="pagination pagination_list mb-0 justify-content-center">
                             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                             <li class="page-item"><a class="page-link" href="#">1</a></li>
                             <li class="page-item"><a class="page-link" href="#">2</a></li>
@@ -154,22 +132,22 @@
         </div>
     </section>
 
-    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal fade" id="formModalToggle" aria-hidden="true" aria-labelledby="formModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-modal-dialog-scrollable modal-xl">
             <div class="modal-content">
-                <form action="">
+                <form action="#" onsubmit="event.preventDefault(); ajax.submit(`/user`);" id="ajax_form">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">CRUD Form</h1>
+                        <h1 class="modal-title fs-5" id="formModalToggleLabel">CRUD Form</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="from-group mb-3">
                             <label for="">Full Name</label>
-                            <input type="username" name="username" id="username" class="form-control">
+                            <input type="full_name" name="full_name" id="full_name" class="form-control">
                         </div>
                         <div class="from-group mb-3">
                             <label for="">Email</label>
-                            <input type="email" name="username" id="username" class="form-control">
+                            <input type="email" name="email" id="email" class="form-control">
                         </div>
                         <div class="from-group mb-3">
                             <label for="">Birth Date</label>
@@ -184,7 +162,7 @@
                             </select>
                         </div>
                         <div class="from-group mb-3">
-                            <label for="">Gender</label> <br>
+                            <label for="" id="gender">Gender</label> <br>
                             <label for="male">
                                 <input id="male" value="male" name="gender" type="radio" class="form-check-input"> Male <br>
                             </label>
@@ -193,7 +171,7 @@
                             </label>
                         </div>
                         <div class="from-group mb-3">
-                            <label for="">Courses</label> <br>
+                            <label for="" id="courses">Courses</label> <br>
                             <label for="web_design">
                                 <input id="web_design" value="web_design" name="courses[]" type="checkbox" class="form-check-input"> web design <br>
                             </label>
@@ -211,7 +189,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="button">Submit</button>
+                        <button class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -277,6 +255,11 @@
         </div>
     </div>
 
+    <script>
+        window.addEventListener("load", (event) => {
+            ajax.init('/user?page=1');
+        });
+    </script>
 </body>
 
 </html>

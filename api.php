@@ -1,29 +1,36 @@
+
 function get_data()
 {
     if(!file_exists(public_path('d.json'))){
         file_put_contents('d.json',"[]");
     }
     $data = json_decode(file_get_contents(public_path('d.json')));
-    $data = array_reverse($data);
     return $data;
 }
 Route::get('/user', function () {
     $data = get_data();
+    $data = array_reverse($data);
     if(request()->has('page')){
         $page = request()->page;
         $per_page = 10;
         $items = array_chunk($data, $per_page)[$page-1];
         $paginate = new \Illuminate\Pagination\LengthAwarePaginator($items,count($data),$per_page,$page, [
-            "path" => "/api/user"
+            "path" => "/user"
         ]);
-        $paginate_html = $paginate->render();
-        return response()->json([$paginate, $paginate_html]);
+        // $paginate_html = $paginate->render();
+        return response()->json($paginate);
     }
     return response()->json($data);
 });
 
+Route::get('/user/{id}', function ($id) {
+    $data = get_data();
+    $index = array_search($id,array_column($data,'id'));
+    return response()->json($data[$index]);
+});
+
 Route::post('/user', function () {
-    $validator = Validator::make(request()->all(), [
+    $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
         'full_name' => ['required'],
         'email' => ['required'],
         'dob' => ['required'],
@@ -44,15 +51,20 @@ Route::post('/user', function () {
     $data = get_data();
     $req_data['id'] = count($data)+1;
     $req_data = array_merge($req_data, request()->all());
+    if(request()->hasFile('image')){
+        $req_data['image'] = url("avatar.png");
+    }
+    if(gettype($req_data["courses"]) != "string"){
+        $req_data["courses"] = json_encode($req_data['courses']);
+    }
     $data[] = $req_data;
 
     file_put_contents(public_path('d.json'), json_encode($data, JSON_PRETTY_PRINT));
-    $data = array_reverse($data);
-    return response()->json($data);
+    return response()->json($req_data);
 });
 
-Route::put('/user/{id}', function ($id) {
-    $validator = Validator::make(request()->all(), [
+Route::post('/user/{id}', function ($id) {
+    $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
         'full_name' => ['required'],
         'email' => ['required'],
         'dob' => ['required'],
@@ -74,6 +86,12 @@ Route::put('/user/{id}', function ($id) {
     foreach (request()->all() as $key => $value) {
         $item->$key = $value;
     }
+    if(request()->hasFile('image')){
+        $data['image'] = url("avatar.png");
+    }
+    if(gettype($item->courses) != "string"){
+        $item->courses = json_encode($item->courses);
+    }
     $data[$index] = $item;
     file_put_contents(public_path('d.json'), json_encode($data, JSON_PRETTY_PRINT));
     return response()->json($item);
@@ -82,7 +100,7 @@ Route::put('/user/{id}', function ($id) {
 Route::delete('/user/{id}', function ($id) {
     $data = get_data();
     $index = array_search($id,array_column($data,'id'));
-    unset($data[$index]);
+    array_splice($data,$index,1);
     file_put_contents(public_path('d.json'), json_encode($data, JSON_PRETTY_PRINT));
     return response()->json(["$id deleted", $data]);
 });

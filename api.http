@@ -19,6 +19,11 @@ GET {{url}} HTTP/1.1
 GET {{url}}?page=1 HTTP/1.1
 
 
+### get one
+# @prompt id enter id
+GET {{url}}/{{id}} HTTP/1.1
+
+
 ### create data
 # @prompt full_name enter full name
 POST {{url}} HTTP/1.1
