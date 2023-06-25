@@ -1,0 +1,26 @@
+[
+    {
+        "id": 2,
+        "full_name": "af asdf",
+        "email": "af asdf@gmail.com",
+        "dob": "1057007539",
+        "user_role": "admin",
+        "gender": "male",
+        "courses": "[\"webdesign\",\"graphics design\"]",
+        "description": "demo description",
+        "image": "avatar.png",
+        "createdAt": "1687727539"
+    },
+    {
+        "id": 3,
+        "full_name": "af asdf",
+        "email": "af asdf@gmail.com",
+        "dob": "1057007539",
+        "user_role": "admin",
+        "gender": "male",
+        "courses": "[\"webdesign\",\"graphics design\"]",
+        "description": "demo description",
+        "image": "avatar.png",
+        "createdAt": "1687727539"
+    }
+]

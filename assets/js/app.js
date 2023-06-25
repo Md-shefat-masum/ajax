@@ -1,5 +1,6 @@
 let ajax = {
     base: "https://qbank.techparkit.org/api",
+    // base: "/api",
     form_submit_type: 'POST',
     data: "",
     single_data: {},

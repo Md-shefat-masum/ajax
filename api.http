@@ -1,9 +1,8 @@
-@protocol = https://
-@hostname = qbank.techparkit.org
-@port = 
-@host = {{hostname}}:{{port}}
+@protocol = http://
+# @hostname = qbank.techparkit.org
+@hostname = 127.0.0.1:8000
 @endpoint = api/user
-@url = {{protocol}}{{hostname}}:{{port}}/{{endpoint}}
+@url = {{protocol}}{{hostname}}/{{endpoint}}
 @createdAt = {{$timestamp}}
 # @modifiedBy = {{$processEnv USERNAME}}
 
@@ -50,7 +49,7 @@ content-type: application/json
 ### update data
 # @prompt id enter id
 # @prompt full_name enter full name
-POST {{url}}/{{id}} HTTP/1.1
+PUT {{url}}/{{id}} HTTP/1.1
 content-type: application/json
 
 {
@@ -63,7 +62,6 @@ content-type: application/json
     "description": "demo description",
     "image": "avatar.png"
 }
-
 
 ### delete data
 # @prompt id enter id
