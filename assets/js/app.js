@@ -1,6 +1,6 @@
 let ajax = {
-    base: "https://qbank.techparkit.org/api",
-    // base: "/api",
+    // base: "https://qbank.techparkit.org/api",
+    base: "/api",
     form_submit_type: 'POST',
     data: "",
     single_data: {},
@@ -11,8 +11,8 @@ let ajax = {
     formModal: new bootstrap.Modal('#formModalToggle', {}),
     detailsModal: new bootstrap.Modal('#detailsModal', {}),
 
-    init: async function (end_point = "/user?page=1", serach_key = "") {
-        let url = this.base + end_point;
+    init: async function (end_point = "/api/user?page=1", serach_key = "") {
+        let url = end_point;
         if (serach_key) {
             url += `&search=${serach_key}`;
         }
@@ -21,9 +21,9 @@ let ajax = {
         this.data = data;
         this.render();
     },
-    get_data: async function (id = 1, end_point = "/user", show_modal = false) {
+    get_data: async function (id = 1, end_point = "/api/user", show_modal = false) {
         this.form_submit_type = 'PUT';
-        let res = await fetch(this.base + end_point + `/${id}`);
+        let res = await fetch(end_point + `/${id}`);
         let data = await res.json();
         this.single_data = data;
         if (show_modal) {
@@ -31,28 +31,26 @@ let ajax = {
         }
         this.render_form();
     },
-    submit: async function (end_point = "/user") {
+    submit: async function (end_point = "/api/user") {
         this.remove_error();
         this.disable_submit_btn();
         let url = this.base + end_point;
         if (this.form_submit_type == "PUT") {
             url += `/${this.single_data.id}`;
         }
-        let res = await fetch(url, {
-            method: "POST",
-            body: new FormData(this.ajax_form),
-        });
+
+        let res = await axios[this.form_submit_type.toLowerCase()](url, new FormData(this.ajax_form))
 
         let status = res.status;
-        let data = await res.json();
+        let data = await res.data;
         this.anable_submit_btn();
         if (status == 422) {
             return this.render_error(data)
         }
-        this.alert();
-        this.ajax_form.reset();
-        this.init();
-        this.formModal.hide();
+        // this.alert();
+        // this.ajax_form.reset();
+        // this.init();
+        // this.formModal.hide();
     },
     delete: async function (id, end_point = "/user") {
         let confirm = window.confirm('delete')
@@ -109,7 +107,7 @@ let ajax = {
                                 <i class="fa fa-align-right"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end py-2">
-                                <a onclick="ajax.get_data(${i.id},'/user',true)" class="dropdown-item" href="#!">View</a>
+                                <a onclick="ajax.get_data(${i.id},'/api/user',true)" class="dropdown-item" href="#!">View</a>
                                 <a class="dropdown-item" onclick="ajax.get_data(${i.id})" href="#!">Edit</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" onclick="ajax.delete(${i.id})" href="#!">Delete</a>

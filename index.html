@@ -51,6 +51,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/styles/styles.css">
     <script src="./assets/plugins/sweetalert2@11.js"></script>
+    <script src="./assets/plugins/axios.js"></script>
     <script src="./assets/js/app.js" defer></script>
 </head>
 
@@ -286,12 +287,11 @@
             </div>
         </div>
     </div>
-
+    
     <script>
         window.addEventListener("load", (event) => {
-            ajax.init('/user?page=1');
+           ajax.init('/api/user?page=1');
         });
-
     </script>
 </body>
 
