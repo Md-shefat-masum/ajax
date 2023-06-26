@@ -35,7 +35,7 @@ function PUT(string $name)
             if(strpos($line, 'name')){
                 $liness[substr($line, 38, -3)] = "";
             }else{
-                $liness[] = $line;
+                $liness[] = $line; //lines
             }
         }
     }
