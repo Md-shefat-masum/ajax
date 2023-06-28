@@ -29,6 +29,9 @@
 |   |   ├── form data get and set  
 |   |   |    ├── text input                         
 |   |   |    ├── select                         
+|   |   |    ├── select2 plugins                         
+|   |   |    ├── checkbox                         
+|   |   |    ├── radio                         
 |   |   |    ├── text area                         
 |   |   |    ├── file                         
 |   |   |    ├── image preview                         
@@ -41,9 +44,12 @@
 |   |   ├── onclick                         
 |   |   ├── onsubmit                         
 |   |   └── onkeyup   
-│   ├── function  
+│   ├── function 
+|   |   ├── parameter                         
+|   |   └── return    
 │   ├── Object   
 |   |   ├── properties and methods                         
+|   |   ├── seperate object keys and values                         
 |   |   ├── manipulation ( get, set, delete )                         
 |   |   └── forin    
 │   ├── Array  
@@ -53,7 +59,7 @@
 |   |   ├── foreach                         
 |   |   ├── array of objects                          
 |   |   ├── find                          
-|   |   └── filer 
+|   |   └── filter 
 │   ├── Sweat alert, Toaster          
 │   ├── Try catch          
 │   └── axios  
@@ -62,7 +68,8 @@
 |       ├── GET single data                         
 |       ├── Create data                         
 |       ├── Update data                         
-|       └── Delete data                         
+|       ├── Delete data                         
+|       └── disable Submit button until pending requests complete                         
 |                                          
 |                                          
 ├── PHP recap  
@@ -83,6 +90,22 @@
 |  
 ├── API project based testing                                                            
 |  
-└── Ajax Implementation
-
+├── Ajax Implementation
+|   ├── render all data 
+|   ├── render pagination 
+|   ├── create data 
+|   ├── render data after insert 
+|   ├── show single data 
+|   ├── edit data 
+|   ├── render data after update 
+|   ├── delete data 
+|   ├── render data after delete 
+|   └── Search 
+|
+|
+└── Vue JS
+    ├── Intro
+    ├── State 
+    ├── Methods 
+    └── Data manipulations 
 ```
