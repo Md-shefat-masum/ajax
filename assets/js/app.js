@@ -16,8 +16,8 @@ let ajax = {
         if (serach_key) {
             url += `&search=${serach_key}`;
         }
-        let res = await fetch(url);
-        let data = await res.json();
+        let res = await axios.get(url);
+        let data = res.data;
         this.data = data;
         this.render();
     },
@@ -39,18 +39,29 @@ let ajax = {
             url += `/${this.single_data.id}`;
         }
 
-        let res = await axios["post"](url, new FormData(this.ajax_form))
+        let res = null;
+        let status = null;
+        let data = null;
 
-        let status = res.status;
-        let data = await res.data;
-        this.anable_submit_btn();
+        try {
+            res = await axios["post"](url, new FormData(this.ajax_form));
+            status = res.status;
+            data = res.data;
+        } catch (error) {
+            status = error.response.status;
+            data = error.response.data;
+            console.log(error.response);
+        }
+        
+        this.enable_submit_btn();
+
         if (status == 422) {
             return this.render_error(data)
         }
-        // this.alert();
-        // this.ajax_form.reset();
-        // this.init();
-        // this.formModal.hide();
+        this.alert();
+        this.ajax_form.reset();
+        this.init();
+        this.formModal.hide();
     },
     delete: async function (id, end_point = "/user") {
         let confirm = window.confirm('delete')
@@ -67,7 +78,7 @@ let ajax = {
     disable_submit_btn: function () {
         [...document.querySelectorAll('button[type="submit"]')].forEach(el => (el.disabled = true))
     },
-    anable_submit_btn: function () {
+    enable_submit_btn: function () {
         [...document.querySelectorAll('button[type="submit"]')].forEach(el => el.disabled = false)
     },
     render_show_modal: function () {
@@ -167,7 +178,6 @@ let ajax = {
         for (const key in error.data) {
             if (Object.hasOwnProperty.call(error.data, key)) {
                 const msg = error.data[key][0];
-                console.log(key);
                 document.querySelector(`#${key}`)?.parentNode.insertAdjacentHTML('beforeend', `
                     <div class="form_error text-danger">${msg}</div>
                 `)

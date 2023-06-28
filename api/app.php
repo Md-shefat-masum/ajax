@@ -10,6 +10,9 @@ class App
     public function __construct()
     {
         $_REQUEST["data"] = $_POST;
+        if (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == "application/json") {
+            $_REQUEST["data"]  = json_decode(file_get_contents('php://input'));
+        }
         $this->path = explode('?', $_SERVER['REQUEST_URI'])[0];
         $this->path = $this->remove_slash_from_entry_end($this->path);
         $this->method = $_SERVER["REQUEST_METHOD"];
@@ -97,53 +100,46 @@ class App
 
     public function run()
     {
-        $path = explode('/', $this->path);
-        $path_count = count($path);
+        try {
+            $path = explode('/', $this->path);
+            $path_count = count($path);
 
-        foreach ($this->routes as $route_index => $route) {
-            $item_path = explode('/', $route->path);
-            $item_path_count = count(explode('/', $route->path));
+            foreach ($this->routes as $route_index => $route) {
+                $item_path = explode('/', $route->path);
+                $item_path_count = count(explode('/', $route->path));
 
-            if (
-                ($path_count == $item_path_count) &&
-                ($route->method == $this->method)
-            ) {
-                $param_values = [];
-                foreach ($route->params as $param) {
-                    $position = $param->position;
-                    if (isset($path[$position])) {
-                        $url_param_position_value = $path[$position];
-                        $item_path[$position] = $url_param_position_value;
-                        $param->value = $url_param_position_value;
-                        $param_values[] = $url_param_position_value;
+                if (
+                    ($path_count == $item_path_count) &&
+                    ($route->method == $this->method)
+                ) {
+                    $param_values = [];
+                    foreach ($route->params as $param) {
+                        $position = $param->position;
+                        if (isset($path[$position])) {
+                            $url_param_position_value = $path[$position];
+                            $item_path[$position] = $url_param_position_value;
+                            $param->value = $url_param_position_value;
+                            $param_values[] = $url_param_position_value;
+                        }
                     }
-                }
-
-                // echo "<br>";
-                // echo "<br>";
-                // print_r(strcmp(implode('/',$item_path), implode('/',$path)));
-                // echo "<br>";
-                // print_r(implode('/',$item_path));
-                // echo "<br>";
-                // print_r(implode('/',$path));
-                // echo "<br>";
-                // print_r($item_path);
-                // echo "<br>";
-                // print_r($path);
-                // echo "<br>";
-
-                if (implode('/', $item_path) == implode('/', $path)) {
-                    $callback = $this->routes[$route_index]->callback;
-                    if (function_exists($callback)) {
-                        call_user_func($callback, ...$param_values);
-                    }
-                    if (strpos($callback, "@")) {
-                        list($controller, $function) = explode('@', $callback);
-                        $controller = new $controller();
-                        $controller->$function(...$param_values);
+                    
+                    if (implode('/', $item_path) == implode('/', $path)) {
+                        $callback = $this->routes[$route_index]->callback;
+                        if (function_exists($callback)) {
+                            call_user_func($callback, ...$param_values);
+                        }
+                        if (strpos($callback, "@")) {
+                            list($controller, $function) = explode('@', $callback);
+                            $controller = new $controller();
+                            $controller->$function(...$param_values);
+                        }
                     }
                 }
             }
+        } catch (\Throwable $th) {
+            header("HTTP/1.1 500 Server Error");
+            echo json_encode(['err_message' => $th->getMessage(), 'data' => []], 500);
+            throw $th;
         }
     }
 }
@@ -258,23 +254,22 @@ function data_path($file_name)
     return realpath(__DIR__ . "../") . "\data\\" . $file_name;
 }
 
-function json($data){
+function json($data)
+{
     echo json_encode($data, JSON_PRETTY_PRINT);
 }
 
-function store($path,$data){
+function store($path, $data)
+{
     file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT));
 }
 
-function get_data($api_end_point = "/api/user", $file_name = "")
+function get_data($file_name = "")
 {
     $json_file_dir = data_path($file_name);
     if (!file_exists($json_file_dir)) {
         file_put_contents($json_file_dir, "[]");
     }
     $data = json_decode(file_get_contents($json_file_dir));
-    if (isset($_GET["page"])) {
-        $data = paginate($data, 10, $api_end_point);
-    }
     return $data;
 }

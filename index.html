@@ -92,7 +92,7 @@
                     <h4>All Data</h4>
                     <div>
                         <input type="search"
-                            onkeyup="event.key == `Enter` && ajax.init(`/user?page=1`,event.target.value)"
+                            onkeyup="event.preventDefault(); event.key == `Enter` && ajax.init(`/api/user?page=1`,event.target.value)"
                             class="form-control">
                     </div>
                     <div>
@@ -278,7 +278,7 @@
                                 <td>Image</td>
                                 <td>:</td>
                                 <td>
-                                    <img id="d_image" src="" alt="">
+                                    <img id="d_image" height="120px" src="" alt="">
                                 </td>
                             </tr>
                         </tbody>
