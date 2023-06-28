@@ -39,7 +39,7 @@ let ajax = {
             url += `/${this.single_data.id}`;
         }
 
-        let res = await axios[this.form_submit_type.toLowerCase()](url, new FormData(this.ajax_form))
+        let res = await axios["post"](url, new FormData(this.ajax_form))
 
         let status = res.status;
         let data = await res.data;

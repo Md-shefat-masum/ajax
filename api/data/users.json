@@ -1,0 +1,13 @@
+[
+    {
+        "id": 1,
+        "full_name": "af asdf",
+        "email": "anikajannat.tanisha@gmail.com",
+        "dob": "2023-06-01",
+        "user_role": "admin",
+        "gender": "male",
+        "courses": "[\"web_design\",\"graphics_design\"]",
+        "description": "asdf asdf ",
+        "image": "assets\/images\/avatar.png"
+    }
+]

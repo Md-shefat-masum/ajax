@@ -9,7 +9,6 @@ class App
 
     public function __construct()
     {
-        
         $_REQUEST["data"] = $_POST;
         $this->path = explode('?', $_SERVER['REQUEST_URI'])[0];
         $this->path = $this->remove_slash_from_entry_end($this->path);
@@ -134,10 +133,17 @@ class App
                 // echo "<br>";
 
                 if (implode('/', $item_path) == implode('/', $path)) {
-                    call_user_func($this->routes[$route_index]->callback, ...$param_values);
+                    $callback = $this->routes[$route_index]->callback;
+                    if (function_exists($callback)) {
+                        call_user_func($callback, ...$param_values);
+                    }
+                    if (strpos($callback, "@")) {
+                        list($controller, $function) = explode('@', $callback);
+                        $controller = new $controller();
+                        $controller->$function(...$param_values);
+                    }
                 }
             }
-            // print_r($this->routes);
         }
     }
 }
@@ -215,4 +221,60 @@ function paginate($array, $limit, $endpoint = "")
     $pagination['links'] = $links;
 
     return $pagination;
+}
+
+
+function image_upload($prefix = "img_", $unique_id = 0, $old_image_dir = null, $path = "uploads/", $dir = "../")
+{
+    $file_name = "assets/images/avatar.png";
+    if (isset($_FILES["image"]) && $_FILES["image"]["size"]) {
+
+        if ($old_image_dir) {
+            $old_image = dirname(__DIR__ . $dir) . "\\" . $old_image_dir;
+            if (file_exists($old_image)) {
+                unlink($old_image);
+            }
+        }
+
+        // $base_name = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_BASENAME));
+        $ext = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
+        $file_name = $path . $prefix . rand(10000, 99999) . ($unique_id ?? time()) . "." . $ext;
+        move_uploaded_file($_FILES["image"]["tmp_name"], $dir .  $file_name);
+    }
+    return $file_name;
+}
+
+
+/**
+ * 
+```php
+    data_path("users.json");
+    // will return: drive:/project/api/data/users.json 
+```
+ */
+
+function data_path($file_name)
+{
+    return realpath(__DIR__ . "../") . "\data\\" . $file_name;
+}
+
+function json($data){
+    echo json_encode($data, JSON_PRETTY_PRINT);
+}
+
+function store($path,$data){
+    file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT));
+}
+
+function get_data($api_end_point = "/api/user", $file_name = "")
+{
+    $json_file_dir = data_path($file_name);
+    if (!file_exists($json_file_dir)) {
+        file_put_contents($json_file_dir, "[]");
+    }
+    $data = json_decode(file_get_contents($json_file_dir));
+    if (isset($_GET["page"])) {
+        $data = paginate($data, 10, $api_end_point);
+    }
+    return $data;
 }
