@@ -3,7 +3,7 @@ Table of contents
 
 ```
 ├── HTML, CSS Recap                     
-│   ├── -[] Form                          
+│   ├── - [x] Form                          
 │   ├── Table    
 |   |   ├── Table Css                        
 |   |   └── Table structure                        
