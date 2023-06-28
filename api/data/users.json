@@ -121,12 +121,12 @@
         "id": 12,
         "full_name": "iii",
         "email": "iii@gmail.com",
-        "dob": "1057267082",
+        "dob": "",
         "user_role": "admin",
         "gender": "male",
         "courses": "[\"webdesign\",\"graphics design\"]",
         "description": "demo description",
-        "image": "assets\/images\/avatar.png",
+        "image": "uploads\/pp_5575112.png",
         "createdAt": "1687987082"
     },
     {
@@ -188,17 +188,5 @@
         "description": "demo description",
         "image": "assets\/images\/avatar.png",
         "createdAt": "1687987094"
-    },
-    {
-        "id": 18,
-        "full_name": "oo",
-        "email": "oo@gmail.com",
-        "dob": "1057267098",
-        "user_role": "admin",
-        "gender": "male",
-        "courses": "[\"webdesign\",\"graphics design\"]",
-        "description": "demo description",
-        "image": "assets\/images\/avatar.png",
-        "createdAt": "1687987098"
     }
 ]

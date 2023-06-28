@@ -10,8 +10,10 @@ let ajax = {
     pagination_list: document.querySelector(".pagination_list"),
     formModal: new bootstrap.Modal('#formModalToggle', {}),
     detailsModal: new bootstrap.Modal('#detailsModal', {}),
+    last_visit_url: '',
 
     init: async function (end_point = "/api/user?page=1", serach_key = "") {
+        this.last_visit_url = end_point;
         let url = end_point;
         if (serach_key) {
             url += `&search=${serach_key}`;
@@ -60,7 +62,7 @@ let ajax = {
         }
         this.alert();
         this.ajax_form.reset();
-        this.init();
+        this.init(this.last_visit_url);
         this.formModal.hide();
     },
     delete: async function (id, end_point = "/user") {
@@ -72,7 +74,7 @@ let ajax = {
         let status = res.status;
         let data = await res.json();
         if (status == 200) {
-            this.init();
+            this.init(this.last_visit_url);
         }
     },
     disable_submit_btn: function () {
