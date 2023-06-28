@@ -1,9 +1,9 @@
-# ajax
-Table of contents
+# AJAX
+✓ Table of contents
 
 ```
 ├── HTML, CSS Recap                     
-│   ├── - [x] Form                          
+│   ├── Form                          
 │   ├── Table    
 |   |   ├── Table Css                        
 |   |   └── Table structure                        
@@ -53,7 +53,9 @@ Table of contents
 |   |   ├── foreach                         
 |   |   ├── array of objects                          
 |   |   ├── find                          
-|   |   └── filer         
+|   |   └── filer 
+│   ├── Sweat alert, Toaster          
+│   ├── Try catch          
 │   └── axios  
 |       ├── Introducing API                         
 |       ├── GET all data                         
@@ -63,6 +65,24 @@ Table of contents
 |       └── Delete data                         
 |                                          
 |                                          
-└── tests
+├── PHP recap  
+│   ├── Request Handling   
+|   |   ├── GET                      
+|   |   ├── Query Parameter                    
+|   |   ├── POST                    
+|   |   ├── Payloads                    
+|   |   ├── Response preview                    
+|   |   ├── File upload                    
+|   |   ├── Content-Type                   
+|   |   └── json ecode and decode         
+|   └── Laravel   
+|       ├── Web routes vs API routes                        
+|       ├── API setup                         
+|       ├── Custom pagination                         
+|       └── API Testing                         
+|  
+├── API project based testing                                                            
+|  
+└── Ajax Implementation
 
 ```
