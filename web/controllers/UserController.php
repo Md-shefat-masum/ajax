@@ -9,7 +9,7 @@ class UserController
     {
         $this->data_path = data_path("users.json");
         $this->data = get_data("users.json");
-        $this->api_end_point = "/api/user";
+        $this->api_end_point = "";
     }
 
     public function get_all_data()
