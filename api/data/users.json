@@ -1,14 +1,14 @@
 [
     {
         "id": 2,
-        "full_name": "update",
+        "full_name": "update dsaf",
         "email": "admin@gmail.com",
         "dob": "2023-06-20",
         "user_role": "admin",
         "gender": "female",
         "courses": "[\"web_design\",\"graphics_design\"]",
         "description": "adsf asf asd",
-        "image": "uploads\/pp_242572.png"
+        "image": "assets\/images\/avatar.png"
     },
     {
         "id": 3,
@@ -178,15 +178,14 @@
         "createdAt": "1687987092"
     },
     {
-        "id": 17,
-        "full_name": "nnn",
-        "email": "nnn@gmail.com",
-        "dob": "1057267094",
+        "id": 18,
+        "full_name": "shefat",
+        "email": "mshefat924@gmail.com",
+        "dob": "2024-02-22",
         "user_role": "admin",
         "gender": "male",
-        "courses": "[\"webdesign\",\"graphics design\"]",
-        "description": "demo description",
-        "image": "assets\/images\/avatar.png",
-        "createdAt": "1687987094"
+        "courses": "[\"web_design\",\"graphics_design\"]",
+        "description": "asd fasd",
+        "image": "uploads\/pp_4875918.png"
     }
 ]
