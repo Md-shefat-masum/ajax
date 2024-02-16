@@ -125,10 +125,10 @@ class App
                     
                     if (implode('/', $item_path) == implode('/', $path)) {
                         $callback = $this->routes[$route_index]->callback;
-                        if (function_exists($callback)) {
+                        if (is_callable($callback) || function_exists($callback)) {
                             call_user_func($callback, ...$param_values);
                         }
-                        if (strpos($callback, "@")) {
+                        else if (strpos($callback, "@")) {
                             list($controller, $function) = explode('@', $callback);
                             $controller = new $controller();
                             $controller->$function(...$param_values);
