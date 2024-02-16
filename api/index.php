@@ -15,5 +15,5 @@ $app->prefix("api/user")
     ->post('/', "UserController@store_data")
     ->post('/{id}', "UserController@update_data")
     ->delete('/{id}', "UserController@delete_data");
-
+    
 $app->run();

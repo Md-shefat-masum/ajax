@@ -60,7 +60,7 @@ class App
                     array_push($router["params"], (object)[
                         "name" => $s_path,
                         "value" => null,
-                        "position" => $key + 2,
+                        "position" => $key + 1,
                     ]);
                 }
             }
@@ -104,6 +104,15 @@ class App
             $path = explode('/', $this->path);
             $path_count = count($path);
 
+            if ($path_count == 1 && $path[0] == "web") {
+                $path[0] == "";
+            } else {
+                unset($path[0]);
+                $path = array_values($path);
+            }
+
+            $path_count = count($path);
+
             foreach ($this->routes as $route_index => $route) {
                 $item_path = explode('/', $route->path);
                 $item_path_count = count(explode('/', $route->path));
@@ -112,6 +121,7 @@ class App
                     ($path_count == $item_path_count) &&
                     ($route->method == $this->method)
                 ) {
+
                     $param_values = [];
                     foreach ($route->params as $param) {
                         $position = $param->position;
@@ -123,16 +133,21 @@ class App
                         }
                     }
                     
-                    if (implode('/', $item_path) == implode('/', $path)) {
+                    if ((implode('/', $item_path) == implode('/', $path) || $route->path == "")) {
                         $callback = $this->routes[$route_index]->callback;
                         if (is_callable($callback) || function_exists($callback)) {
                             call_user_func($callback, ...$param_values);
-                        }
-                        else if (strpos($callback, "@")) {
+                        } else if (strpos($callback, "@")) {
                             list($controller, $function) = explode('@', $callback);
                             $controller = new $controller();
                             $controller->$function(...$param_values);
                         }
+                    } else {
+                        // print_r($this->routes);
+                        // print_r($item_path);
+                        // print_r($route);
+                        // print_r($path);
+                        // print_r(implode('/', $item_path));
                     }
                 }
             }
