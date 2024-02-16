@@ -13,14 +13,13 @@ $app->prefix("")
     // ->get('/', "UserController@get_all_data")
     ->get('/', function () {
         echo "home";
-    })
-    ->prefix("/blog")
+    });
+
+$app->prefix("/blog")
     ->get('/all', function () {
         echo "all blog";
     })
-    ->get('/reads/{id}', function () {
-        echo "reads blog";
-    })
+    ->get('/reads/{id}', "UserController@get_single_data")
     ->get('/read/{id}', function () {
         echo "read blog";
     });
